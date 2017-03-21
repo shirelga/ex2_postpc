@@ -1,9 +1,9 @@
 package postpc.todolistmanger;
 
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -13,24 +13,32 @@ import java.util.List;
  * Created by shirelga on 20/03/2017.
  */
 
-public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder>{
+public class RvAdapter extends FloatingContextMenuRecyclerView.Adapter<RvAdapter.ViewHolder>{
 
     private List<String> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends FloatingContextMenuRecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
         public ViewHolder(TextView v) {
             super(v);
             mTextView = v;
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mTextView.showContextMenu();
+                    return true;
+                }
+            });
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public RvAdapter(List<String> myDataset) {
+
         mDataset = myDataset;
     }
 
