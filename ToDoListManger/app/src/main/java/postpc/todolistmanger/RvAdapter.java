@@ -2,11 +2,14 @@ package postpc.todolistmanger;
 
 import android.graphics.Color;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +18,7 @@ import java.util.List;
 
 public class RvAdapter extends FloatingContextMenuRecyclerView.Adapter<RvAdapter.ViewHolder>{
 
-    private List<String> mDataset;
+    private List<Pair<Date, String>> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -37,9 +40,8 @@ public class RvAdapter extends FloatingContextMenuRecyclerView.Adapter<RvAdapter
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RvAdapter(List<String> myDataset) {
-
-        mDataset = myDataset;
+    public RvAdapter() {
+          mDataset = new ArrayList<>();
     }
 
     // Create new views (invoked by the layout manager)
@@ -59,8 +61,8 @@ public class RvAdapter extends FloatingContextMenuRecyclerView.Adapter<RvAdapter
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        Log.i("-I-", mDataset.get(position));
-        holder.mTextView.setText(mDataset.get(position));
+        Log.i("-I-", mDataset.get(position).first + " " + mDataset.get(position).second);
+        holder.mTextView.setText(mDataset.get(position).second);
         if((position % 2) == 0)
         {
             holder.mTextView.setBackgroundColor(Color.RED);
@@ -72,9 +74,42 @@ public class RvAdapter extends FloatingContextMenuRecyclerView.Adapter<RvAdapter
         }
     }
 
+
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public void addItem(Date date, String task)
+    {
+        Pair<Date, String> taskPair = new Pair<>(date, task);
+        mDataset.add(taskPair);
+    }
+
+    public int getItemByTask(String task)
+    {
+        for (int i = 0; i < mDataset.size(); i++){
+            if(mDataset.get(i).second.equals(task))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void setItem(Pair<Date, String> dateTask, int pos)
+    {
+        mDataset.set(pos, dateTask);
+    }
+
+    public void deleteItem(int pos)
+    {
+        mDataset.remove(pos);
+    }
+
+    public Pair<Date, String> getItem(int pos)
+    {
+        return mDataset.get(pos);
     }
 }

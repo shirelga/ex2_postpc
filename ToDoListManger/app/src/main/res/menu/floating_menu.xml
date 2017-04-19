@@ -6,7 +6,24 @@
 
     <item
         android:id="@+id/delete_b"
-        android:title="Delete"
+        android:title="@string/delete"
+        />
+
+    <item
+        android:id="@+id/done"
+        android:title="@string/done"
+        />
+
+    <item
+        android:id="@+id/makeCall"
+        android:title="@string/call"
+        android:visible="false"
+        />
+
+
+    <item
+        android:id="@+id/new_date"
+        android:title="@string/edit"
         />
 
 </menu>
