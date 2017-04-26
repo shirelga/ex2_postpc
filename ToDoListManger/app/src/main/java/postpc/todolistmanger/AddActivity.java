@@ -20,10 +20,12 @@ import java.util.Date;
 public class AddActivity extends Activity {
 
     private String mOldTask;
+    private int id;
 
     public AddActivity() {
         super();
         mOldTask = null;
+        id = 0;
     }
 
     @Override
@@ -36,6 +38,7 @@ public class AddActivity extends Activity {
         if(extra != null)
         {
             mOldTask = extra.getString("task");
+            id = extra.getInt("pos");
             EditText editTask = (EditText)findViewById(R.id.edtNewItem);
             editTask.setText(mOldTask);
         }
@@ -61,7 +64,7 @@ public class AddActivity extends Activity {
 
         DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth() + 1;
+        int month = datePicker.getMonth();
         int year = datePicker.getYear();
 
         Calendar cal = Calendar.getInstance();
@@ -73,6 +76,7 @@ public class AddActivity extends Activity {
         Intent resultIntent = new Intent();
         resultIntent.putExtra("title", task);
         resultIntent.putExtra("dueDate", date);
+        resultIntent.putExtra("pos", id);
 
         if(mOldTask != null)
         {

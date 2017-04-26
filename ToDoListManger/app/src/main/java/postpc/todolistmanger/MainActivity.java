@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 //        // specify an adapter (see also next example)
-        mAdapter = new RvAdapter();
+        mAdapter = new RvAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
@@ -42,12 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                FabClick(mAdapter, mRecyclerView);
+                FabClick();
             }
         });
 
         registerForContextMenu(mRecyclerView);
-
     }
 
     @Override
@@ -79,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.new_date:
                 Intent newDateDialog = new Intent(this, AddActivity.class);
                 newDateDialog.putExtra("task", dateTask.second);
+                newDateDialog.putExtra("pos", info.position);
                 startActivityForResult(newDateDialog, 1134);
                 return true;
             case R.id.makeCall:
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void FabClick(RecyclerView.Adapter adapter, RecyclerView recyclerView) {
+    private void FabClick() {
         Intent addDialog = new Intent(this, AddActivity.class);
         startActivityForResult(addDialog, 1133);
     }
@@ -110,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (requestCode == 1134)
             {
-                String OldTaskName = data.getStringExtra("oldTask");
-                int pos = ((RvAdapter)mAdapter).getItemByTask(OldTaskName);
+                int pos = data.getIntExtra("pos", 0);
                 ((RvAdapter)mAdapter).setItem(new Pair<>(dueDate, taskName), pos);
                 mAdapter.notifyItemChanged(pos);
             }
